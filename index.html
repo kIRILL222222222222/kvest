@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Продвинутый HTML Квест: Путь Веб-Мастера</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f1b3a, #1a3a5f, #2a5a7a);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(10, 20, 40, 0.85);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #ff9a00, #ffcc00, #ff9a00);
+            z-index: 1;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #ffcc00;
+            position: relative;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(90deg, #ff9a00, #ffcc00, #ff9a00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: #ffcc00;
+            margin-bottom: 15px;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255, 204, 0, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+        
+        .quest-area {
+            background: rgba(30, 40, 70, 0.8);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 5px solid #ffcc00;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .chapter-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: #ffcc00;
+            color: #0f1b3a;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        
+        h2 {
+            color: #ffcc00;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .narrative {
+            font-style: italic;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            border-left: 3px solid #ffcc00;
+        }
+        
+        .code-block {
+            background: #1e2b3e;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+            border: 1px solid #3a506b;
+            position: relative;
+        }
+        
+        .code-header {
+            background: #2a3a52;
+            padding: 5px 10px;
+            margin: -15px -15px 10px -15px;
+            border-radius: 8px 8px 0 0;
+            font-size: 0.9rem;
+            color: #ffcc00;
+        }
+        
+        .tag {
+            color: #ff79c6;
+        }
+        
+        .attribute {
+            color: #50fa7b;
+        }
+        
+        .value {
+            color: #f1fa8c;
+        }
+        
+        .content {
+            color: #f8f8f2;
+        }
+        
+        .comment {
+            color: #6272a4;
+        }
+        
+        .question {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 204, 0, 0.1);
+            border-radius: 8px;
+        }
+        
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .choices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .choice {
+            background: rgba(255, 204, 0, 0.15);
+            border: 2px solid #ffcc00;
+            border-radius: 8px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .choice::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .choice:hover::before {
+            left: 100%;
+        }
+        
+        .choice:hover {
+            background: rgba(255, 204, 0, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .code-input {
+            background: #1e2b3e;
+            border: 1px solid #3a506b;
+            border-radius: 5px;
+            padding: 10px;
+            color: #f8f8f2;
+            font-family: 'Courier New', monospace;
+            width: 100%;
+            margin: 10px 0;
+        }
+        
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .correct {
+            background: rgba(80, 250, 123, 0.15);
+            border: 2px solid #50fa7b;
+        }
+        
+        .incorrect {
+            background: rgba(255, 85, 85, 0.15);
+            border: 2px solid #ff5555;
+        }
+        
+        .hint {
+            background: rgba(139, 233, 253, 0.1);
+            border: 1px solid #8be9fd;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        .hint-toggle {
+            color: #8be9fd;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: inline-block;
+        }
+        
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #3a506b;
+        }
+        
+        .progress-item {
+            text-align: center;
+            flex: 1;
+            padding: 0 10px;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: #1e2b3e;
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff9a00, #ffcc00);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .active {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+        
+        button {
+            background: linear-gradient(90deg, #ff9a00, #ffcc00);
+            color: #0f1b3a;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .achievement {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 204, 0, 0.9);
+            color: #0f1b3a;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateX(150%);
+            transition: transform 0.5s ease;
+            z-index: 100;
+            max-width: 300px;
+        }
+        
+        .achievement.show {
+            transform: translateX(0);
+        }
+        
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .choices {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Продвинутый HTML Квест</h1>
+            <p class="subtitle">Путь Веб-Мастера: От новичка до эксперта</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div>Глава</div>
+                    <div class="stat-value" id="chapter-counter">1/6</div>
+                </div>
+                <div class="stat-item">
+                    <div>Очки</div>
+                    <div class="stat-value" id="score">0</div>
+                </div>
+                <div class="stat-item">
+                    <div>Верных ответов</div>
+                    <div class="stat-value" id="correct-answers">0</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="quest-area" id="quest-area">
+            <div class="chapter-badge">Глава 1</div>
+            <h2>Основы HTML</h2>
+            
+            <div class="narrative">
+                Вы стоите перед входом в Храм Веб-Разработки. Древний мудрец протягивает вам свиток и говорит: 
+                "Чтобы пройти дальше, ты должен понять основы языка разметки HTML. Начни с самого главного - структуры документа".
+            </div>
+            
+            <p>HTML (HyperText Markup Language) - это язык разметки, который определяет структуру веб-страницы.</p>
+            
+            <div class="code-block">
+                <div class="code-header">HTML-структура</div>
+                <span class="tag">&lt;!DOCTYPE html&gt;</span><br>
+                <span class="tag">&lt;html&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;head&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;title&gt;</span><span class="content">Моя первая страница</span><span class="tag">&lt;/title&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/head&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;body&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span><span class="content">Привет, мир!</span><span class="tag">&lt;/h1&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/body&gt;</span><br>
+                <span class="tag">&lt;/html&gt;</span>
+            </div>
+            
+            <p>Первый тег, который должен быть в любом HTML-документе - это <strong>&lt;!DOCTYPE html&gt;</strong>. Он сообщает браузеру, что это документ HTML5.</p>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 1: Какой тег содержит основной контент веб-страницы, который видит пользователь?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;head&gt;</div>
+                    <div class="choice" data-correct="true">&lt;body&gt;</div>
+                    <div class="choice" data-correct="false">&lt;html&gt;</div>
+                    <div class="choice" data-correct="false">&lt;main&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 2: Какой тег используется для определения заголовка документа (отображается во вкладке браузера)?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;h1&gt;</div>
+                    <div class="choice" data-correct="true">&lt;title&gt;</div>
+                    <div class="choice" data-correct="false">&lt;header&gt;</div>
+                    <div class="choice" data-correct="false">&lt;meta&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 3: Впишите недостающий тег в структуру HTML-документа:</div>
+                <div class="code-block">
+                    <span class="tag">&lt;!DOCTYPE html&gt;</span><br>
+                    <span class="tag">&lt;html&gt;</span><br>
+                    &nbsp;&nbsp;<span class="tag">&lt;head&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;title&gt;</span><span class="content">Документ</span><span class="tag">&lt;/title&gt;</span><br>
+                    &nbsp;&nbsp;<span class="tag">&lt;/head&gt;</span><br>
+                    &nbsp;&nbsp;<span class="tag">&lt;</span><input type="text" class="code-input" id="q1-3-input" placeholder="Введите тег"><span class="tag">&gt;</span><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span><span class="content">Заголовок</span><span class="tag">&lt;/h1&gt;</span><br>
+                    &nbsp;&nbsp;<span class="tag">&lt;/</span><span id="q1-3-end"></span><span class="tag">&gt;</span><br>
+                    <span class="tag">&lt;/html&gt;</span>
+                </div>
+                <button id="check-q1-3">Проверить ответ</button>
+                <div class="hint-toggle">Показать подсказку</div>
+                <div class="hint">Этот тег содержит весь контент, который отображается в браузере.</div>
+            </div>
+            
+            <div class="feedback correct hidden">
+                <p>Верно! Вы успешно ответили на вопросы первой главы.</p>
+                <button id="next-chapter">Перейти к следующей главе</button>
+            </div>
+            
+            <div class="feedback incorrect hidden">
+                <p>Есть ошибки! Проверьте свои ответы и попробуйте снова.</p>
+            </div>
+        </div>
+        
+        <!-- Глава 2 -->
+        <div class="quest-area hidden" id="chapter2">
+            <div class="chapter-badge">Глава 2</div>
+            <h2>Текстовые элементы и форматирование</h2>
+            
+            <div class="narrative">
+                Вы прошли через врата храма и оказались в Зале Текста. На стенах высечены различные текстовые элементы. 
+                Страж зала говорит: "Чтобы продолжить, покажи мне, как правильно размечать текст".
+            </div>
+            
+            <p>HTML предоставляет различные теги для форматирования текста:</p>
+            
+            <div class="code-block">
+                <div class="code-header">Текстовые элементы HTML</div>
+                <span class="tag">&lt;h1&gt;</span><span class="content">Заголовок 1 уровня</span><span class="tag">&lt;/h1&gt;</span><br>
+                <span class="tag">&lt;h2&gt;</span><span class="content">Заголовок 2 уровня</span><span class="tag">&lt;/h2&gt;</span><br>
+                <span class="tag">&lt;p&gt;</span><span class="content">Это абзац текста.</span><span class="tag">&lt;/p&gt;</span><br>
+                <span class="tag">&lt;strong&gt;</span><span class="content">Жирный текст</span><span class="tag">&lt;/strong&gt;</span><br>
+                <span class="tag">&lt;em&gt;</span><span class="content">Курсивный текст</span><span class="tag">&lt;/em&gt;</span><br>
+                <span class="tag">&lt;br&gt;</span><span class="content"> - перенос строки</span><br>
+                <span class="tag">&lt;hr&gt;</span><span class="content"> - горизонтальная линия</span>
+            </div>
+            
+            <p>Заголовки имеют иерархию от &lt;h1&gt; (самый важный) до &lt;h6&gt; (наименее важный).</p>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 1: Какой тег используется для создания абзаца?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;h1&gt;</div>
+                    <div class="choice" data-correct="false">&lt;div&gt;</div>
+                    <div class="choice" data-correct="true">&lt;p&gt;</div>
+                    <div class="choice" data-correct="false">&lt;span&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 2: Какой из этих тегов используется для самого важного заголовка?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="true">&lt;h1&gt;</div>
+                    <div class="choice" data-correct="false">&lt;h2&gt;</div>
+                    <div class="choice" data-correct="false">&lt;h6&gt;</div>
+                    <div class="choice" data-correct="false">&lt;header&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 3: Какой тег семантически правильнее использовать для выделения важного текста?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;b&gt;</div>
+                    <div class="choice" data-correct="true">&lt;strong&gt;</div>
+                    <div class="choice" data-correct="false">&lt;i&gt;</div>
+                    <div class="choice" data-correct="false">&lt;em&gt;</div>
+                </div>
+            </div>
+            
+            <div class="feedback correct hidden">
+                <p>Отлично! Вы разобрались с текстовыми элементами HTML.</p>
+                <button id="next-chapter2">Перейти к следующей главе</button>
+            </div>
+            
+            <div class="feedback incorrect hidden">
+                <p>Есть ошибки! Изучите материал еще раз и попробуйте ответить правильно.</p>
+            </div>
+        </div>
+        
+        <!-- Глава 3 -->
+        <div class="quest-area hidden" id="chapter3">
+            <div class="chapter-badge">Глава 3</div>
+            <h2>Ссылки, изображения и списки</h2>
+            
+            <div class="narrative">
+                Вы подходите к магическому порталу. Надпись гласит: "Чтобы активировать портал, создай путь к другим мирам и покажи образы далеких земель".
+            </div>
+            
+            <p>Ссылки, изображения и списки - важные элементы веб-страниц:</p>
+            
+            <div class="code-block">
+                <div class="code-header">Ссылки, изображения и списки</div>
+                <span class="comment">&lt;!-- Ссылка --&gt;</span><br>
+                <span class="tag">&lt;a</span> <span class="attribute">href=</span><span class="value">"https://example.com"</span><span class="tag">&gt;</span><span class="content">Текст ссылки</span><span class="tag">&lt;/a&gt;</span><br><br>
+                
+                <span class="comment">&lt;!-- Изображение --&gt;</span><br>
+                <span class="tag">&lt;img</span> <span class="attribute">src=</span><span class="value">"image.jpg"</span> <span class="attribute">alt=</span><span class="value">"Описание изображения"</span><span class="tag">&gt;</span><br><br>
+                
+                <span class="comment">&lt;!-- Неупорядоченный список --&gt;</span><br>
+                <span class="tag">&lt;ul&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span><span class="content">Первый пункт</span><span class="tag">&lt;/li&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span><span class="content">Второй пункт</span><span class="tag">&lt;/li&gt;</span><br>
+                <span class="tag">&lt;/ul&gt;</span><br><br>
+                
+                <span class="comment">&lt;!-- Упорядоченный список --&gt;</span><br>
+                <span class="tag">&lt;ol&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span><span class="content">Первый пункт</span><span class="tag">&lt;/li&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;li&gt;</span><span class="content">Второй пункт</span><span class="tag">&lt;/li&gt;</span><br>
+                <span class="tag">&lt;/ol&gt;</span>
+            </div>
+            
+            <p>Обрати внимание, что тег &lt;img&gt; не имеет закрывающего тега - это одиночный тег.</p>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 1: Какой атрибут у тега &lt;a&gt; указывает адрес, куда ведет ссылка?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">src</div>
+                    <div class="choice" data-correct="true">href</div>
+                    <div class="choice" data-correct="false">link</div>
+                    <div class="choice" data-correct="false">url</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 2: Какой атрибут у тега &lt;img&gt; содержит альтернативный текст для изображения?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">title</div>
+                    <div class="choice" data-correct="true">alt</div>
+                    <div class="choice" data-correct="false">description</div>
+                    <div class="choice" data-correct="false">text</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 3: Какой тег используется для создания упорядоченного (нумерованного) списка?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;ul&gt;</div>
+                    <div class="choice" data-correct="true">&lt;ol&gt;</div>
+                    <div class="choice" data-correct="false">&lt;li&gt;</div>
+                    <div class="choice" data-correct="false">&lt;list&gt;</div>
+                </div>
+            </div>
+            
+            <div class="feedback correct hidden">
+                <p>Верно! Вы освоили работу со ссылками, изображениями и списками.</p>
+                <button id="next-chapter3">Перейти к следующей главе</button>
+            </div>
+            
+            <div class="feedback incorrect hidden">
+                <p>Есть ошибки! Внимательно изучите примеры кода и попробуйте снова.</p>
+            </div>
+        </div>
+        
+        <!-- Глава 4 -->
+        <div class="quest-area hidden" id="chapter4">
+            <div class="chapter-badge">Глава 4</div>
+            <h2>Таблицы и формы</h2>
+            
+            <div class="narrative">
+                Вы попадаете в Зал Данных. Древний архив содержит таблицы с информацией и формы для взаимодействия. 
+                Хранитель архива говорит: "Покажи, что ты умеешь работать с таблицами и формами".
+            </div>
+            
+            <p>Таблицы и формы - важные элементы для организации данных и взаимодействия с пользователем:</p>
+            
+            <div class="code-block">
+                <div class="code-header">Таблицы в HTML</div>
+                <span class="tag">&lt;table&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;tr&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;th&gt;</span><span class="content">Заголовок 1</span><span class="tag">&lt;/th&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;th&gt;</span><span class="content">Заголовок 2</span><span class="tag">&lt;/th&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/tr&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;tr&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;td&gt;</span><span class="content">Данные 1</span><span class="tag">&lt;/td&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;td&gt;</span><span class="content">Данные 2</span><span class="tag">&lt;/td&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/tr&gt;</span><br>
+                <span class="tag">&lt;/table&gt;</span>
+            </div>
+            
+            <div class="code-block">
+                <div class="code-header">Формы в HTML</div>
+                <span class="tag">&lt;form</span> <span class="attribute">action=</span><span class="value">"/submit"</span> <span class="attribute">method=</span><span class="value">"post"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;label</span> <span class="attribute">for=</span><span class="value">"name"</span><span class="tag">&gt;</span><span class="content">Имя:</span><span class="tag">&lt;/label&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;input</span> <span class="attribute">type=</span><span class="value">"text"</span> <span class="attribute">id=</span><span class="value">"name"</span> <span class="attribute">name=</span><span class="value">"name"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;br&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;input</span> <span class="attribute">type=</span><span class="value">"submit"</span> <span class="attribute">value=</span><span class="value">"Отправить"</span><span class="tag">&gt;</span><br>
+                <span class="tag">&lt;/form&gt;</span>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 1: Какой тег используется для создания строки в таблице?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;td&gt;</div>
+                    <div class="choice" data-correct="true">&lt;tr&gt;</div>
+                    <div class="choice" data-correct="false">&lt;th&gt;</div>
+                    <div class="choice" data-correct="false">&lt;table&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 2: Какой тег используется для ячейки-заголовка в таблице?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;td&gt;</div>
+                    <div class="choice" data-correct="true">&lt;th&gt;</div>
+                    <div class="choice" data-correct="false">&lt;thead&gt;</div>
+                    <div class="choice" data-correct="false">&lt;header&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 3: Какой атрибут у тега &lt;form&gt; указывает URL для отправки данных?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="true">action</div>
+                    <div class="choice" data-correct="false">method</div>
+                    <div class="choice" data-correct="false">url</div>
+                    <div class="choice" data-correct="false">submit</div>
+                </div>
+            </div>
+            
+            <div class="feedback correct hidden">
+                <p>Превосходно! Вы разобрались с таблицами и формами.</p>
+                <button id="next-chapter4">Перейти к следующей главе</button>
+            </div>
+            
+            <div class="feedback incorrect hidden">
+                <p>Есть ошибки! Внимательно изучите структуру таблиц и форм.</p>
+            </div>
+        </div>
+        
+        <!-- Глава 5 -->
+        <div class="quest-area hidden" id="chapter5">
+            <div class="chapter-badge">Глава 5</div>
+            <h2>Семантические элементы HTML5</h2>
+            
+            <div class="narrative">
+                Вы достигаете Святилища Семантики. Здесь всё имеет четкое значение и предназначение. 
+                Жрец семантики говорит: "Покажи, что понимаешь смысл семантических элементов".
+            </div>
+            
+            <p>Семантические элементы HTML5 придают смысл структуре веб-страницы:</p>
+            
+            <div class="code-block">
+                <div class="code-header">Семантические элементы HTML5</div>
+                <span class="tag">&lt;header&gt;</span><span class="content">Верхняя часть страницы или раздела</span><span class="tag">&lt;/header&gt;</span><br>
+                <span class="tag">&lt;nav&gt;</span><span class="content">Навигационное меню</span><span class="tag">&lt;/nav&gt;</span><br>
+                <span class="tag">&lt;main&gt;</span><span class="content">Основное содержимое страницы</span><span class="tag">&lt;/main&gt;</span><br>
+                <span class="tag">&lt;article&gt;</span><span class="content">Самостоятельный контент (статья)</span><span class="tag">&lt;/article&gt;</span><br>
+                <span class="tag">&lt;section&gt;</span><span class="content">Тематическая группа контента</span><span class="tag">&lt;/section&gt;</span><br>
+                <span class="tag">&lt;aside&gt;</span><span class="content">Боковая панель, связанная с контентом</span><span class="tag">&lt;/aside&gt;</span><br>
+                <span class="tag">&lt;footer&gt;</span><span class="content">Нижняя часть страницы или раздела</span><span class="tag">&lt;/footer&gt;</span>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 1: Какой семантический тег используется для основного содержимого страницы?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;header&gt;</div>
+                    <div class="choice" data-correct="true">&lt;main&gt;</div>
+                    <div class="choice" data-correct="false">&lt;content&gt;</div>
+                    <div class="choice" data-correct="false">&lt;body&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 2: Какой тег используется для навигационного меню?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;menu&gt;</div>
+                    <div class="choice" data-correct="true">&lt;nav&gt;</div>
+                    <div class="choice" data-correct="false">&lt;navigation&gt;</div>
+                    <div class="choice" data-correct="false">&lt;ul&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 3: Какой тег используется для независимого контента, который может быть распространен отдельно?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;section&gt;</div>
+                    <div class="choice" data-correct="true">&lt;article&gt;</div>
+                    <div class="choice" data-correct="false">&lt;div&gt;</div>
+                    <div class="choice" data-correct="false">&lt;independent&gt;</div>
+                </div>
+            </div>
+            
+            <div class="feedback correct hidden">
+                <p>Великолепно! Вы понимаете семантику HTML5.</p>
+                <button id="next-chapter5">Перейти к следующей главе</button>
+            </div>
+            
+            <div class="feedback incorrect hidden">
+                <p>Есть ошибки! Изучите назначение семантических элементов.</p>
+            </div>
+        </div>
+        
+        <!-- Глава 6 -->
+        <div class="quest-area hidden" id="chapter6">
+            <div class="chapter-badge">Глава 6</div>
+            <h2>Метатеги и атрибуты</h2>
+            
+            <div class="narrative">
+                Вы подходите к Залу Мета-Знаний. Здесь хранятся секреты, невидимые обычным посетителям, но важные для работы сайта. 
+                Хранитель мета-знаний говорит: "Покажи, что понимаешь невидимую часть веб-страниц".
+            </div>
+            
+            <p>Метатеги и атрибуты предоставляют дополнительную информацию о странице:</p>
+            
+            <div class="code-block">
+                <div class="code-header">Метатеги и важные атрибуты</div>
+                <span class="comment">&lt;!-- Кодировка страницы --&gt;</span><br>
+                <span class="tag">&lt;meta</span> <span class="attribute">charset=</span><span class="value">"UTF-8"</span><span class="tag">&gt;</span><br><br>
+                
+                <span class="comment">&lt;!-- Описание страницы для поисковых систем --&gt;</span><br>
+                <span class="tag">&lt;meta</span> <span class="attribute">name=</span><span class="value">"description"</span> <span class="attribute">content=</span><span class="value">"Описание страницы"</span><span class="tag">&gt;</span><br><br>
+                
+                <span class="comment">&lt;!-- Ключевые слова --&gt;</span><br>
+                <span class="tag">&lt;meta</span> <span class="attribute">name=</span><span class="value">"keywords"</span> <span class="attribute">content=</span><span class="value">"HTML, CSS, JavaScript"</span><span class="tag">&gt;</span><br><br>
+                
+                <span class="comment">&lt;!-- Атрибут для адаптивности --&gt;</span><br>
+                <span class="tag">&lt;meta</span> <span class="attribute">name=</span><span class="value">"viewport"</span> <span class="attribute">content=</span><span class="value">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 1: Какой метатег устанавливает кодировку страницы?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;meta name="encoding"&gt;</div>
+                    <div class="choice" data-correct="true">&lt;meta charset="UTF-8"&gt;</div>
+                    <div class="choice" data-correct="false">&lt;encoding&gt;UTF-8&lt;/encoding&gt;</div>
+                    <div class="choice" data-correct="false">&lt;meta type="charset"&gt;</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 2: Какой атрибут тега &lt;meta&gt; используется для адаптивного дизайна?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">name="responsive"</div>
+                    <div class="choice" data-correct="true">name="viewport"</div>
+                    <div class="choice" data-correct="false">name="adaptive"</div>
+                    <div class="choice" data-correct="false">name="mobile"</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text">Вопрос 3: Какой метатег предоставляет описание страницы для поисковых систем?</div>
+                
+                <div class="choices">
+                    <div class="choice" data-correct="false">&lt;meta name="keywords"&gt;</div>
+                    <div class="choice" data-correct="true">&lt;meta name="description"&gt;</div>
+                    <div class="choice" data-correct="false">&lt;meta name="summary"&gt;</div>
+                    <div class="choice" data-correct="false">&lt;description&gt;</div>
+                </div>
+            </div>
+            
+            <div class="feedback correct hidden">
+                <p>Потрясающе! Вы освоили метатеги и атрибуты.</p>
+                <button id="next-chapter6">Завершить квест</button>
+            </div>
+            
+            <div class="feedback incorrect hidden">
+                <p>Есть ошибки! Изучите назначение различных метатегов.</p>
+            </div>
+        </div>
+        
+        <!-- Финальная глава -->
+        <div class="quest-area hidden" id="final-chapter">
+            <div class="chapter-badge">Завершение</div>
+            <h2>Поздравляем!</h2>
+            
+            <div class="narrative">
+                Портал активирован! Яркий свет озаряет комнату, и перед вами появляется древний артефакт - Куб Веб-Мастера. 
+                Вы успешно прошли initiation в мир HTML и стали настоящим веб-разработчиком!
+            </div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <div>Ваш результат</div>
+                    <div class="stat-value" id="final-score">0</div>
+                </div>
+                <div class="stat-item">
+                    <div>Правильных ответов</div>
+                    <div class="stat-value" id="final-correct">0/18</div>
+                </div>
+                <div class="stat-item">
+                    <div>Время прохождения</div>
+                    <div class="stat-value" id="completion-time">0:00</div>
+                </div>
+            </div>
+            
+            <p>Вы изучили все основные аспекты HTML:</p>
+            <ul>
+                <li>Структуру HTML-документа</li>
+                <li>Текстовые элементы и форматирование</li>
+                <li>Ссылки, изображения и списки</li>
+                <li>Таблицы и формы</li>
+                <li>Семантические элементы HTML5</li>
+                <li>Метатеги и атрибуты</li>
+            </ul>
+            
+            <div class="code-block">
+                <div class="code-header">Полная структура HTML-документа</div>
+                <span class="tag">&lt;!DOCTYPE html&gt;</span><br>
+                <span class="tag">&lt;html</span> <span class="attribute">lang=</span><span class="value">"ru"</span><span class="tag">&gt;</span><br>
+                <span class="tag">&lt;head&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;meta</span> <span class="attribute">charset=</span><span class="value">"UTF-8"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;meta</span> <span class="attribute">name=</span><span class="value">"viewport"</span> <span class="attribute">content=</span><span class="value">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;title&gt;</span><span class="content">Мой сайт</span><span class="tag">&lt;/title&gt;</span><br>
+                <span class="tag">&lt;/head&gt;</span><br>
+                <span class="tag">&lt;body&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;header&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h1&gt;</span><span class="content">Добро пожаловать!</span><span class="tag">&lt;/h1&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;nav&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;a</span> <span class="attribute">href=</span><span class="value">"#"</span><span class="tag">&gt;</span><span class="content">Главная</span><span class="tag">&lt;/a&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/nav&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/header&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;main&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;article&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;h2&gt;</span><span class="content">Заголовок статьи</span><span class="tag">&lt;/h2&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span><span class="content">Содержание статьи...</span><span class="tag">&lt;/p&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;/article&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/main&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;footer&gt;</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="tag">&lt;p&gt;</span><span class="content">&copy; 2023 Мой сайт</span><span class="tag">&lt;/p&gt;</span><br>
+                &nbsp;&nbsp;<span class="tag">&lt;/footer&gt;</span><br>
+                <span class="tag">&lt;/body&gt;</span><br>
+                <span class="tag">&lt;/html&gt;</span>
+            </div>
+            
+            <p>Продолжайте изучать веб-разработку! Рекомендуемые темы для дальнейшего изучения:</p>
+            <ul>
+                <li>CSS для стилизации веб-страниц</li>
+                <li>JavaScript для интерактивности</li>
+                <li>Фреймворки и библиотеки (React, Vue, Angular)</li>
+                <li>Серверные технологии (Node.js, PHP, Python)</li>
+                <li>Базы данных (MySQL, MongoDB)</li>
+            </ul>
+            
+            <div class="action-buttons">
+                <button id="restart">Начать квест заново</button>
+                <button id="share">Поделиться результатом</button>
+            </div>
+        </div>
+        
+        <div class="progress">
+            <div class="progress-item">
+                <div>Глава 1</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress1"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div>Глава 2</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress2"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div>Глава 3</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress3"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div>Глава 4</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress4"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div>Глава 5</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress5"></div>
+                </div>
+            </div>
+            <div class="progress-item">
+                <div>Глава 6</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="achievement" id="achievement">
+        <div class="achievement-icon">🏆</div>
+        <div class="achievement-title" id="achievement-title">Достижение разблокировано!</div>
+        <div class="achievement-desc" id="achievement-desc"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Инициализация переменных
+            let currentChapter = 1;
+            let score = 0;
+            let correctAnswers = 0;
+            let totalQuestions = 18; // Всего вопросов в квесте
+            let startTime = new Date();
+            let achievements = [
+                { id: 1, title: "Новичок", desc: "Завершена первая глава", earned: false },
+                { id: 2, title: "Текстовый мастер", desc: "Завершена вторая глава", earned: false },
+                { id: 3, title: "Навигатор", desc: "Завершена третья глава", earned: false },
+                { id: 4, title: "Формостроитель", desc: "Завершена четвертая глава", earned: false },
+                { id: 5, title: "Семантик", desc: "Завершена пятая глава", earned: false },
+                { id: 6, title: "Мета-мастер", desc: "Завершена шестая глава", earned: false },
+                { id: 7, title: "Эксперт HTML", desc: "Правильно отвечены все вопросы", earned: false }
+            ];
+            
+            // Элементы DOM
+            const chapterCounter = document.getElementById('chapter-counter');
+            const scoreElement = document.getElementById('score');
+            const correctAnswersElement = document.getElementById('correct-answers');
+            const finalScoreElement = document.getElementById('final-score');
+            const finalCorrectElement = document.getElementById('final-correct');
+            const completionTimeElement = document.getElementById('completion-time');
+            const achievementElement = document.getElementById('achievement');
+            const achievementTitle = document.getElementById('achievement-title');
+            const achievementDesc = document.getElementById('achievement-desc');
+            
+            // Инициализация статистики
+            updateStats();
+            
+            // Обработка выбора ответа
+            document.querySelectorAll('.choice').forEach(choice => {
+                choice.addEventListener('click', function() {
+                    const isCorrect = this.getAttribute('data-correct') === 'true';
+                    const question = this.closest('.question');
+                    const allChoices = question.querySelectorAll('.choice');
+                    
+                    // Отключить все варианты ответа после выбора
+                    allChoices.forEach(c => {
+                        c.style.pointerEvents = 'none';
+                        if (c.getAttribute('data-correct') === 'true') {
+                            c.style.backgroundColor = 'rgba(80, 250, 123, 0.3)';
+                            c.style.borderColor = '#50fa7b';
+                        } else if (c === this && !isCorrect) {
+                            c.style.backgroundColor = 'rgba(255, 85, 85, 0.3)';
+                            c.style.borderColor = '#ff5555';
+                        }
+                    });
+                    
+                    // Обновить статистику
+                    if (isCorrect) {
+                        score += 10;
+                        correctAnswers++;
+                        updateStats();
+                    }
+                    
+                    // Проверить, все ли вопросы в главе отвечены
+                    checkChapterCompletion();
+                });
+            });
+            
+            // Обработка ввода кода
+            document.getElementById('check-q1-3').addEventListener('click', function() {
+                const input = document.getElementById('q1-3-input');
+                const answer = input.value.trim().toLowerCase();
+                
+                if (answer === 'body') {
+                    input.style.backgroundColor = 'rgba(80, 250, 123, 0.3)';
+                    input.style.borderColor = '#50fa7b';
+                    score += 10;
+                    correctAnswers++;
+                    updateStats();
+                    checkChapterCompletion();
+                } else {
+                    input.style.backgroundColor = 'rgba(255, 85, 85, 0.3)';
+                    input.style.borderColor = '#ff5555';
+                }
+            });
+            
+            // Обработка перехода между главами
+            document.querySelectorAll('[id^="next-chapter"]').forEach(button => {
+                button.addEventListener('click', function() {
+                    // Показать достижение
+                    showAchievement(currentChapter);
+                    
+                    // Скрыть текущую главу
+                    document.getElementById(currentChapter === 1 ? 'quest-area' : `chapter${currentChapter}`).classList.add('hidden');
+                    
+                    // Обновить прогресс
+                    document.getElementById(`progress${currentChapter}`).style.width = '100%';
+                    
+                    // Перейти к следующей главе
+                    currentChapter++;
+                    
+                    if (currentChapter <= 6) {
+                        document.getElementById(`chapter${currentChapter}`).classList.remove('hidden');
+                        chapterCounter.textContent = `${currentChapter}/6`;
+                    } else {
+                        // Завершение квеста
+                        document.getElementById('final-chapter').classList.remove('hidden');
+                        finalScoreElement.textContent = score;
+                        finalCorrectElement.textContent = `${correctAnswers}/${totalQuestions}`;
+                        
+                        // Расчет времени прохождения
+                        const endTime = new Date();
+                        const timeDiff = (endTime - startTime) / 1000; // в секундах
+                        const minutes = Math.floor(timeDiff / 60);
+                        const seconds = Math.floor(timeDiff % 60);
+                        completionTimeElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+                        
+                        // Достижение за все правильные ответы
+                        if (correctAnswers === totalQuestions) {
+                            setTimeout(() => {
+                                showAchievement(7);
+                            }, 1000);
+                        }
+                    }
+                });
+            });
+            
+            // Перезапуск квеста
+            document.getElementById('restart').addEventListener('click', function() {
+                location.reload();
+            });
+            
+            // Поделиться результатом
+            document.getElementById('share').addEventListener('click', function() {
+                const text = `Я завершил HTML квест с результатом ${score} очков и ${correctAnswers}/${totalQuestions} правильных ответов!`;
+                if (navigator.share) {
+                    navigator.share({
+                        title: 'HTML Квест',
+                        text: text,
+                        url: window.location.href
+                    });
+                } else {
+                    alert(text);
+                }
+            });
+            
+            // Показать/скрыть подсказки
+            document.querySelectorAll('.hint-toggle').forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const hint = this.nextElementSibling;
+                    hint.style.display = hint.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+            
+            // Функции
+            function updateStats() {
+                scoreElement.textContent = score;
+                correctAnswersElement.textContent = correctAnswers;
+            }
+            
+            function checkChapterCompletion() {
+                const currentArea = document.getElementById(currentChapter === 1 ? 'quest-area' : `chapter${currentChapter}`);
+                const questions = currentArea.querySelectorAll('.question');
+                let answeredCount = 0;
+                
+                questions.forEach(question => {
+                    const choices = question.querySelectorAll('.choice');
+                    let answered = false;
+                    
+                    choices.forEach(choice => {
+                        if (choice.style.pointerEvents === 'none') {
+                            answered = true;
+                        }
+                    });
+                    
+                    // Проверка для вопроса с вводом кода
+                    if (question.querySelector('.code-input')) {
+                        const input = question.querySelector('.code-input');
+                        if (input.style.backgroundColor === 'rgba(80, 250, 123, 0.3)') {
+                            answered = true;
+                        }
+                    }
+                    
+                    if (answered) answeredCount++;
+                });
+                
+                // Если все вопросы отвечены, показать кнопку продолжения
+                if (answeredCount === questions.length) {
+                    currentArea.querySelector('.feedback.correct').style.display = 'block';
+                }
+            }
+            
+            function showAchievement(chapter) {
+                const achievement = achievements.find(a => a.id === chapter);
+                if (achievement && !achievement.earned) {
+                    achievement.earned = true;
+                    achievementTitle.textContent = achievement.title;
+                    achievementDesc.textContent = achievement.desc;
+                    achievementElement.classList.add('show');
+                    
+                    setTimeout(() => {
+                        achievementElement.classList.remove('show');
+                    }, 3000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
